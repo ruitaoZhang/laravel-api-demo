@@ -68,7 +68,7 @@ class AuthController extends Controller
         }
 
         $user = $request->user();
-        // 密码授权访问令牌 ->
+
         // 以下使用个人访问令牌 -> https://learnku.com/docs/laravel/6.x/passport/5152#personal-access-tokens
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
@@ -87,6 +87,11 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * get user info
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function userInfo(Request $request)
     {
         return response()->json($request->user());
