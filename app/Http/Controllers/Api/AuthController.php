@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\User;
 use Carbon\Carbon;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
+    use ApiResponse;
     /**
      * create user
      * @param [string] name
@@ -95,5 +97,17 @@ class AuthController extends Controller
     public function userInfo(Request $request)
     {
         return response()->json($request->user());
+    }
+
+    /**
+     * login out user
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function loginOut(Request $request)
+    {
+        $request->user()->token()->revoke();
+
+        return $this->success('成功退出');
     }
 }
