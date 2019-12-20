@@ -37,13 +37,18 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
+            'driver' => 'passport',
+            'provider' => 'admins',
         ],
 
         'api' => [
             'driver' => 'passport',
             'provider' => 'users',
+        ],
+
+        'admin' => [
+            'driver' => 'passport',
+            'provider' => 'admins',
         ],
     ],
 
@@ -69,6 +74,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\User::class,
         ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => \App\Admin::class
+        ]
 
         // 'users' => [
         //     'driver' => 'database',

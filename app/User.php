@@ -54,4 +54,5 @@ class User extends Authenticatable
         // 数据库中的status为：1、2.通过改方法进行转换，更能清晰的知道 1、2 对应的值
         return User::$userTypeMap[$this->getAttribute('status')];
     }
+
 }

@@ -27,4 +27,13 @@ Route::group([
         Route::post('user_info', 'Api\AuthController@userInfo');
         Route::get('loginOut', 'Api\AuthController@loginOut');
     });
+
+    Route::post('adminLogin', 'Admin\AuthController@login');
+    Route::post('adminRegister', 'Admin\AuthController@register');
+    Route::group([
+        'middleware' => 'auth:admin'
+    ], function () {
+        Route::get('admin_info', 'Admin\AuthController@adminInfo');
+        Route::get('adminLoginOut', 'Admin\AuthController@loginOut');
+    });
 });
