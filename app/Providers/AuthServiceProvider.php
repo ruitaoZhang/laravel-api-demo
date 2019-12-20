@@ -28,5 +28,10 @@ class AuthServiceProvider extends ServiceProvider
 
         // 这个函数会注册发出访问令牌并撤销访问令牌、客户端和个人访问令牌所必需的路由
         Passport::routes();
+
+        Passport::tokensCan([
+            'admin-api' => 'admin api',
+            'user-api' => 'user api',
+        ]);
     }
 }

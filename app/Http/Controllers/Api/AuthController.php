@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -63,22 +64,31 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
 
-        if (!Auth::attempt($credentials)) {
+        /*if (!Auth::attempt($credentials)) {
             return response()->json([
                 'message' => '用户名或密码错误'
             ], 401);
         }
 
-        $user = $request->user();
+        $user = $request->user();*/
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => '用户名或密码错误'
+            ], 401);
+        }
+
 
         // 以下使用个人访问令牌 -> https://learnku.com/docs/laravel/6.x/passport/5152#personal-access-tokens
-        $tokenResult = $user->createToken('Personal Access Token');
+        $tokenResult = $user->createToken('Personal Access Token', ['user-api']);
         $token = $tokenResult->token;
         Log::error($tokenResult);
         Log::error($tokenResult->token);
         Log::error($tokenResult->accessToken);
         if ($request->remember_me)
-            $token->expires_at = Carbon::now()->addWeeks(1);
+            $token->expires_at = Carbon::now()->addMinute();
 
         $token->save();
 

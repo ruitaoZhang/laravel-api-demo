@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\Passport;
 
 class AuthController extends Controller
 {
@@ -59,7 +60,7 @@ class AuthController extends Controller
         \Log::error($admin);
 
         // 创建访问令牌
-        $tokenResult = $admin->createToken('Personal Access Token');
+        $tokenResult = $admin->createToken('Personal Access Token', ['admin-api']);
         $token = $tokenResult->token;
 
         if ($request->remember_me)
@@ -78,6 +79,11 @@ class AuthController extends Controller
 
     public function adminInfo(Request $request)
     {
+        // scopeIds 方法将返回所有已定义 ID / 名称的数组
+        \Log::error(Passport::scopeIds());
+        \Log::error(Passport::scopes());
+        \Log::error(Passport::hasScope('admin-api'));
+
         return $this->success($request->user());
     }
 
